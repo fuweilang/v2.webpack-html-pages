@@ -29,6 +29,9 @@ var prodConfig = {
     })
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery"
+    }),
     // http://vuejs.github.io/vue-loader/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
@@ -65,7 +68,7 @@ var prodConfig = {
   ]
 }
 
-var pages = utils.getHtmlEntry('./html/*.html', './html')
+var pages = utils.getHtmlEntry('./src/page/**/*.jade')
 for (var key in pages) {
   var page = pages[key]
   var conf = {
@@ -84,11 +87,11 @@ for (var key in pages) {
     },
     // necessary to consistently work with multiple chunks via CommonsChunkPlugin
     chunksSortMode: 'dependency'
-  };
+  }
   // generate dist index.html with correct asset hash for caching.
   // you can customize output by editing /index.html
   // see https://github.com/ampedandwired/html-webpack-plugin
-  prodConfig.plugins.push(new HtmlWebpackPlugin(conf));
+  prodConfig.plugins.push(new HtmlWebpackPlugin(conf))
 }
 
 var webpackConfig = merge(baseWebpackConfig, prodConfig)

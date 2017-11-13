@@ -27,9 +27,9 @@ exports.cssLoaders = function (options) {
     }).join('!')
 
     if (options.extract) {
-      return ExtractTextPlugin.extract('vue-style-loader', sourceLoader)
+      return ExtractTextPlugin.extract('style-loader', sourceLoader)
     } else {
-      return ['vue-style-loader', sourceLoader].join('!')
+      return ['style-loader', sourceLoader].join('!')
     }
   }
 
@@ -60,18 +60,20 @@ exports.styleLoaders = function (options) {
 }
 
 // 获取HTML模板对象
-exports.getHtmlEntry = function (globPath, pathDir) {
+exports.getHtmlEntry = function (globPath) {
   var files = glob.sync(globPath)
-  var entries = {}, entry, basename
-
+  var entries = {}, entry, key
+  var reg= /^\.\/src\/page\/(\w+)\/index\.jade$/
   for (var i = 0; i < files.length; i++) {
     entry = files[i]
-    basename = path.basename(entry, '.html')
-    entries[basename] = {
-      basename: basename,
-      filename: basename + '.html',
-      template: entry,
-      chunk: basename
+    if (entry.match(reg)) {
+      basename = entry.match(reg)[1]
+      entries[basename] = {
+        basename: basename,
+        filename: basename + '.html',
+        template: entry,
+        chunk: basename
+      }
     }
   }
   return entries

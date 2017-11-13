@@ -1,11 +1,32 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+var merge = require('webpack-merge')
+var glob = require('glob')
 
-module.exports = {
+var getFilenames = function (globPath) {
+  var files, entry, filenames, reg
+  files = glob.sync(globPath)
+  filenames = {
+    build: {}
+  }
+  reg= /^\.\/src\/page\/(\w+)\/index\.jade$/
+  for (var i = 0; i < files.length; i++) {
+    entry = files[i]
+    if (entry.match(reg)) {
+      basename = entry.match(reg)[1]
+      filenames.build[basename] = path.resolve(__dirname, '../dist/' + basename + '.html')
+    }
+  }
+  return filenames
+}
+
+var filenames = getFilenames('./src/page/**/*.jade')
+
+var config = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../dist/index.html'),
-    pc: path.resolve(__dirname, '../dist/pc.html'),
+    // index: path.resolve(__dirname, '../dist/index.html'),
+    // about: path.resolve(__dirname, '../dist/about.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -31,3 +52,5 @@ module.exports = {
     cssSourceMap: false
   }
 }
+
+module.exports = merge(config, filenames)
