@@ -68,7 +68,7 @@ var prodConfig = {
   ]
 }
 
-var pages = utils.getHtmlEntry('./src/page/**/*.jade')
+var pages = utils.getHtmlEntry(config.dev.pages)
 for (var key in pages) {
   var page = pages[key]
   var conf = {

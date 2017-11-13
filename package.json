@@ -44,6 +44,7 @@
     "function-bind": "^1.0.2",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.8.1",
+    "html-withimg-loader": "^0.1.16",
     "http-proxy-middleware": "^0.17.2",
     "inject-loader": "^2.0.1",
     "isparta-loader": "^2.0.0",

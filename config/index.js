@@ -2,6 +2,8 @@
 var path = require('path')
 var merge = require('webpack-merge')
 var glob = require('glob')
+var pages = './src/page/**/*.html'
+var js = './src/page/**/*.js'
 
 var getFilenames = function (globPath) {
   var files, entry, filenames, reg
@@ -9,7 +11,7 @@ var getFilenames = function (globPath) {
   filenames = {
     build: {}
   }
-  reg= /^\.\/src\/page\/(\w+)\/index\.jade$/
+  reg= /^\.\/src\/page\/(\w+)\/index\.html$/
   for (var i = 0; i < files.length; i++) {
     entry = files[i]
     if (entry.match(reg)) {
@@ -20,10 +22,12 @@ var getFilenames = function (globPath) {
   return filenames
 }
 
-var filenames = getFilenames('./src/page/**/*.jade')
+var filenames = getFilenames(pages)
 
 var config = {
   build: {
+    pages: pages,
+    js: js,
     env: require('./prod.env'),
     // index: path.resolve(__dirname, '../dist/index.html'),
     // about: path.resolve(__dirname, '../dist/about.html'),
@@ -39,6 +43,8 @@ var config = {
     productionGzipExtensions: ['js', 'css']
   },
   dev: {
+    pages: pages,
+    js: js,
     env: require('./dev.env'),
     port: 8080,
     assetsSubDirectory: 'static',

@@ -18,8 +18,8 @@ var getEntry = function (globPath) {
   }
   return entries
 }
-var entry = getEntry('./src/page/**/*.js')
 
+var entry = getEntry(process.env.NODE_ENV === 'production' ? config.build.js : config.dev.js)
 module.exports = {
   entry: entry,
   output: {
@@ -50,8 +50,10 @@ module.exports = {
     ],
     loaders: [
       {
-        test: /\.jade$/, 
-        loader: 'jade'
+        test: /\.html$/,
+        loader: 'html-withimg',
+        include: projectRoot,
+        exclude: /node_modules/
       },
       {
         test: /\.js$/,

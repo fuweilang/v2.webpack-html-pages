@@ -6,7 +6,6 @@ var merge = require('webpack-merge')
 var utils = require('./utils')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var HandlebarsPlugin = require("handlebars-webpack-plugin")
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -34,7 +33,7 @@ const devConfig = {
   ]
 }
 
-var pages = utils.getHtmlEntry('./src/page/**/*.jade')
+var pages = utils.getHtmlEntry(config.dev.pages)
 for (var key in pages) {
   var page = pages[key]
   var conf = {

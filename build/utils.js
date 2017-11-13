@@ -63,7 +63,7 @@ exports.styleLoaders = function (options) {
 exports.getHtmlEntry = function (globPath) {
   var files = glob.sync(globPath)
   var entries = {}, entry, key
-  var reg= /^\.\/src\/page\/(\w+)\/index\.jade$/
+  var reg= /^\.\/src\/page\/(\w+)\/index\.html$/
   for (var i = 0; i < files.length; i++) {
     entry = files[i]
     if (entry.match(reg)) {
