@@ -1,14 +1,17 @@
 ## Build Setup
 
 ``` bash
-# install dependencies
+# install dependencies 
 npm install
+(安装node依赖包)
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:8080 
 npm run dev
+(用于前端开发)
 
 # build for production with minification
 npm run build
+(执行指令后会生成一个dist文件，用于发布到服务器)
 
 # run unit tests
 npm run unit
