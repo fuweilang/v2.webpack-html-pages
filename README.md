@@ -26,9 +26,10 @@ PS:该框架支持多页面开发，只需在'src/page'下新建一个新页面�
 该文件下的less,css,image文件，随项目开发，自己require就好。
 
 举个例子:
-我想做一个'help.html'页面，npm run dev后在浏览器输入'localhost:8080/help.html'。按如下步骤：
+我想做一个'help.html'页面，按如下步骤：
 1.'src/page'下新家一个'help'文件夹
 2.'help'文件夹下分别新建index.html和index.js文件。
+3.执行npm run dev后在浏览器输入'localhost:8080/help.html'
 完成。
 
 如果要考虑发布到cdn的绝对路径，可改'config/index.js'中的'config.build.assetsPublicPath'的值。
