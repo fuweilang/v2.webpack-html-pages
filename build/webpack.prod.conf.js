@@ -10,8 +10,6 @@ var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : config.build.env
 
-console.log(utils.assetsPath('css/[name].css?time=[contenthash]'))
-
 var prodConfig = {
   module: {
     loaders: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true })
@@ -22,17 +20,10 @@ var prodConfig = {
     filename: utils.assetsPath('js/[name].js?time=[chunkhash]'),
     chunkFilename: utils.assetsPath('js/[id].js?time=[chunkhash]')
   },
-  vue: {
-    loaders: utils.cssLoaders({
-      sourceMap: config.build.productionSourceMap,
-      extract: true
-    })
-  },
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery"
     }),
-    // http://vuejs.github.io/vue-loader/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
