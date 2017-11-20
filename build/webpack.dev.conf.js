@@ -28,7 +28,7 @@ const devConfig = {
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoErrorsPlugin()
     // https://github.com/ampedandwired/html-webpack-plugin
   ]
 }
@@ -45,5 +45,6 @@ for (var key in pages) {
   }
   devConfig.plugins.push(new HtmlWebpackPlugin(conf))
 }
+
 
 module.exports = merge(baseWebpackConfig, devConfig)

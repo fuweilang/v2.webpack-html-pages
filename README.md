@@ -6,12 +6,16 @@ npm install
 (安装node依赖包)
 
 # serve with hot reload at localhost:8080 
-npm run dev
-(用于前端开发)
+npm run dev [name]
+(用于前端开发。[name]是参数)。例：
+1.npm run dev all: 所有的项目编译开发
+2.npm run dev wap/help: 只编译'src/page/wap/help'页面开发，如果无此文件夹，会自动创建模板并编译
 
 # build for production with minification
-npm run build
-(执行指令后会生成一个dist文件，用于发布到服务器)
+npm run build [name]
+(执行指令后会生成一个dist文件，用于发布到服务器。[name]是参数)。例：
+1.npm run build all: 所有的项目打包压缩到dist文件夹
+2.npm run build wap/help: 只打包压缩'src/page/wap/help'下的文件到dist相对应的路径中
 
 # run unit tests
 npm run unit
@@ -27,9 +31,13 @@ PS:该框架支持多页面开发，只需在'src/page'下新建一个新页面�
 
 举个例子:
 我想做一个'help.html'页面，按如下步骤：
-1.'src/page'下新家一个'help'文件夹
+1.npm run dev help (此命令会在'src/page'下自动生成help文件)
+2.浏览器输入'localhost:8080/help/index.html'
+完成。
+或者：
+1.'src/page'下新建一个'help'文件夹
 2.'help'文件夹下分别新建index.html和index.js文件。
-3.执行npm run dev后在浏览器输入'localhost:8080/help.html'
+3.执行npm run dev help/all后在浏览器输入'localhost:8080/help/index.html'
 完成。
 
 如果要考虑发布到cdn的绝对路径，可改'config/index.js'中的'config.build.assetsPublicPath'的值。

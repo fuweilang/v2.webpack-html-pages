@@ -4,22 +4,7 @@ var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
 
-var getEntry = function (globPath) {
-  var files = glob.sync(globPath)
-  var entries = {}, entry, key
-  var reg= /^\.\/src\/page\/(\w+)\/index\.js$/
-  for (var i = 0; i < files.length; i++) {
-    entry = files[i]
-    key = entry.match(reg)
-    if (key) {
-      key = entry.match(reg)[1]
-      entries[key] = entry
-    }
-  }
-  return entries
-}
-
-var entry = getEntry(process.env.NODE_ENV === 'production' ? config.build.js : config.dev.js)
+var entry = utils.getEntry(process.env.NODE_ENV === 'production' ? config.build.js : config.dev.js)
 module.exports = {
   entry: entry,
   output: {
@@ -32,6 +17,7 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
       'src': path.resolve(__dirname, '../src'),
+      'page': path.resolve(__dirname, '../src/page'),
       'widget': path.resolve(__dirname, '../src/widget')
     },
     'jquery': 'jquery'
@@ -71,7 +57,7 @@ module.exports = {
         query: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }
+        },
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,

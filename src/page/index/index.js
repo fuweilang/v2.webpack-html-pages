@@ -1,6 +1,7 @@
-import './index.less'
+import './css/index.less'
 
-import Out from "./out";
+import Out from "./js/out"
+import In from "./js/in";
 
 import ajpg from "./img/a.jpg"
 
@@ -20,3 +21,4 @@ var img = document.createElement('img')
 img.src = ajpg
 img.width = 160;
 $('.img1-con').append(img)
+

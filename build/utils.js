@@ -41,7 +41,8 @@ exports.cssLoaders = function (options) {
     sass: generateLoaders(['css', 'sass?indentedSyntax']),
     scss: generateLoaders(['css', 'sass']),
     stylus: generateLoaders(['css', 'stylus']),
-    styl: generateLoaders(['css', 'stylus'])
+    styl: generateLoaders(['css', 'stylus']),
+    url: generateLoaders(['css', 'file'])
   }
 }
 
@@ -63,17 +64,34 @@ exports.styleLoaders = function (options) {
 exports.getHtmlEntry = function (globPath) {
   var files = glob.sync(globPath)
   var entries = {}, entry, key
-  var reg= /^\.\/src\/page\/(\w+)\/index\.html$/
+  var reg= /^\.\/src\/page\/([\w\/]+)\/index\.html$/
   for (var i = 0; i < files.length; i++) {
     entry = files[i]
     if (entry.match(reg)) {
       basename = entry.match(reg)[1]
       entries[basename] = {
         basename: basename,
-        filename: basename + '.html',
+        // filename: basename + '.html',
+        filename: basename + '/index.html',
         template: entry,
         chunk: basename
       }
+    }
+  }
+  return entries
+}
+
+// 获取entry入口对象
+exports.getEntry = function (globPath) {
+  var files = glob.sync(globPath)
+  var entries = {}, entry, key
+  var reg= /^\.\/src\/page\/([\w\/]+)\/index\.js$/
+  for (var i = 0; i < files.length; i++) {
+    entry = files[i]
+    key = entry.match(reg)
+    if (key) {
+      key = entry.match(reg)[1]
+      entries[key] = entry
     }
   }
   return entries

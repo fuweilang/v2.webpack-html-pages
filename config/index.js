@@ -2,27 +2,16 @@
 var path = require('path')
 var merge = require('webpack-merge')
 var glob = require('glob')
-var pages = './src/page/**/*.html'
-var js = './src/page/**/*.js'
 
-var getFilenames = function (globPath) {
-  var files, entry, filenames, reg
-  files = glob.sync(globPath)
-  filenames = {
-    build: {}
-  }
-  reg= /^\.\/src\/page\/(\w+)\/index\.html$/
-  for (var i = 0; i < files.length; i++) {
-    entry = files[i]
-    if (entry.match(reg)) {
-      basename = entry.match(reg)[1]
-      filenames.build[basename] = path.resolve(__dirname, '../dist/' + basename + '.html')
-    }
-  }
-  return filenames
+var src = process.argv[2]
+var pages, js
+if (src == 'all') {
+  pages = './src/page/**/index.html'
+  js = './src/page/**/index.js'
+} else {
+  pages = `./src/page/${src}/index.html`
+  js = `./src/page/${src}/index.js`
 }
-
-var filenames = getFilenames(pages)
 
 var config = {
   build: {
@@ -30,7 +19,6 @@ var config = {
     js: js,
     env: require('./prod.env'),
     // index: path.resolve(__dirname, '../dist/index.html'),
-    // about: path.resolve(__dirname, '../dist/about.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -59,4 +47,19 @@ var config = {
   }
 }
 
-module.exports = merge(config, filenames)
+var setBuildHTML = function (globPath) {
+  var files, entry, reg
+  files = glob.sync(globPath)
+  reg = /^\.\/src\/page\/([\w\/]+)\/index\.html$/
+  for (var i = 0; i < files.length; i++) {
+    entry = files[i]
+    if (entry.match(reg)) {
+      basename = entry.match(reg)[1]
+      config.build[basename] = path.resolve(__dirname, '../dist/page/' + basename + '/index.html')
+    }
+  }
+  return config
+}
+setBuildHTML(pages)
+
+module.exports = config
