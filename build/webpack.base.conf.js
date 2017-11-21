@@ -40,11 +40,17 @@ module.exports = {
         test: /\.html$/,
         loader: 'html-loader',
         include: projectRoot,
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        options: {
+          ignoreCustomFragments: [/\{\{.*?}}/],
+          root: path.resolve(__dirname, 'src/page'),
+          interpolate: true,
+          attrs: ['img:src', 'link:href', 'script:src']
+        }
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader?importLoaders=1'
+        loader: 'css-loader'
       },
       {
         test: /\.less$/,
@@ -63,21 +69,25 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
-        query: {
+        options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
-          // outputPath: 'apple'
-          outputPath: function (path) {
-            console.log(path)
-            console.log('###############')
-            return path
+          name: function (path) {
+            let reg = /^(.+)\\src\\page\\([\w\\]+)\\(img|images|image)\\([\w\.]+)$/
+            if (path.match(reg)) {
+              let filename = path.match(reg)[2] + '\\' + path.match(reg)[3]
+              let arr = filename.split('\\')
+              filename = arr.join('/')
+              return utils.assetsPath(filename + '/[name].[hash:7].[ext]')
+            } else {
+              return utils.assetsPath('img/[name].[hash:7].[ext]')
+            }
           }
         },
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
-        query: {
+        options: {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
