@@ -33,7 +33,7 @@ var prodConfig = {
         warnings: false
       }
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    // new webpack.optimize.OccurenceOrderPlugin(),
     // extract css into its own file
     new ExtractTextPlugin(utils.assetsPath('[name]/css/index.css?time=[contenthash]'))
   ]

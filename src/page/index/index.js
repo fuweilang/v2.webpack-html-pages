@@ -1,7 +1,6 @@
 import './css/index.less'
 
 import Out from "./js/out"
-import In from "./js/in";
 
 import ajpg from "./img/a.jpg"
 
@@ -13,6 +12,7 @@ print()
 var out = new Out()
 out.print()
 
+console.log($.fn)
 $('#wrap').css({
   fontSize: '50px'
 })

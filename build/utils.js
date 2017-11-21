@@ -42,7 +42,6 @@ exports.cssLoaders = function (options) {
     scss: generateLoaders(['css', 'sass']),
     stylus: generateLoaders(['css', 'stylus']),
     styl: generateLoaders(['css', 'stylus']),
-    url: generateLoaders(['css', 'file'])
   }
 }
 

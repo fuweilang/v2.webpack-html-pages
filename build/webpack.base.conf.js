@@ -13,63 +13,75 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: ['', '.js'],
-    fallback: [path.join(__dirname, '../node_modules')],
+    extensions: ['.js'],
+    modules: [
+      path.join(__dirname, '../node_modules')
+    ],
     alias: {
       'src': path.resolve(__dirname, '../src'),
       'page': path.resolve(__dirname, '../src/page'),
-      'widget': path.resolve(__dirname, '../src/widget')
+      'widget': path.resolve(__dirname, '../src/widget'),
+      'jquery': 'jquery'
     },
-    'jquery': 'jquery'
   },
   resolveLoader: {
-    fallback: [path.join(__dirname, '../node_modules')]
+    modules: [path.join(__dirname, '../node_modules')]
   },
   module: {
-    preLoaders: [
+    rules: [
       // {
       //   test: /\.js$/,
-      //   loader: 'eslint',
+      //   loader: 'eslint-loader',
+      //   enforce: 'pre',
       //   include: projectRoot,
       //   exclude: /node_modules/
-      // }
-    ],
-    loaders: [
+      // },
       {
         test: /\.html$/,
-        loader: 'html-withimg',
+        loader: 'html-loader',
         include: projectRoot,
         exclude: /node_modules/
       },
       {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader?importLoaders=1'
+      },
+      {
+        test: /\.less$/,
+        loader: 'style-loader!css-loader!less-loader'
+      },
+      {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: projectRoot,
         exclude: /node_modules/
       },
       {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'json-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url',
+        loader: 'url-loader',
         query: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+          // outputPath: 'apple'
+          outputPath: function (path) {
+            console.log(path)
+            console.log('###############')
+            return path
+          }
         },
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url',
+        loader: 'url-loader',
         query: {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
     ]
-  },
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
   }
 }
