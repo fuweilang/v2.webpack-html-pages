@@ -67,7 +67,7 @@ module.exports = {
           name: function (path) {
             return utils.imagesPath(path, '[name].[hash:7].[ext]')
           }
-        },
+        }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,

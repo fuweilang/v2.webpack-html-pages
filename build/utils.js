@@ -77,7 +77,8 @@ exports.imagesPath = function (path, name) {
 // 获取HTML模板对象
 exports.getHtmlEntry = function (globPath) {
   var files = glob.sync(globPath)
-  var entries = {}, entry, key
+  var entries = {}
+  var entry, basename
   var reg= /^\.\/src\/page\/([\w\/]+)\/index\.html$/
   for (var i = 0; i < files.length; i++) {
     entry = files[i]
@@ -98,7 +99,8 @@ exports.getHtmlEntry = function (globPath) {
 // 获取entry入口对象
 exports.getEntry = function (globPath) {
   var files = glob.sync(globPath)
-  var entries = {}, entry, key
+  var entries = {}
+  var entry, key
   var reg= /^\.\/src\/page\/([\w\/]+)\/index\.js$/
   for (var i = 0; i < files.length; i++) {
     entry = files[i]
