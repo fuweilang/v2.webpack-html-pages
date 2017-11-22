@@ -62,12 +62,11 @@ exports.styleLoaders = function (options) {
   return output
 }
 
-exports.imagesPath = function (path, name) {
-  let reg = /^(.+)\\src\\page\\([\w\\]+)\\(img|images|image)\\([\w\.]+)$/
-  if (path.match(reg)) {
-    let filename = path.match(reg)[2] + '\\' + path.match(reg)[3]
-    let arr = filename.split('\\')
-    filename = arr.join('/')
+exports.imagesPath = function (_path, name) {
+  _path = _path.split(path.sep).join('/')
+  let reg = /^(.+)\/src\/page\/([\w\/]+)\/(img|images|image)\/([\w\.]+)$/
+  if (_path.match(reg)) {
+    let filename = _path.match(reg)[2] + '/' + _path.match(reg)[3]
     return exports.assetsPath(filename + '/' + name)
   } else {
     return exports.assetsPath('img/' + name)
