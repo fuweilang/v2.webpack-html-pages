@@ -5,7 +5,6 @@ var webpack = require('webpack')
 var merge = require('webpack-merge')
 var utils = require('./utils')
 var baseWebpackConfig = require('./webpack.base.conf')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // add hot-reload related code to entry chunks
@@ -15,7 +14,7 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 
 const devConfig = {
   module: {
-    loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
   // eval-source-map is faster for development
   devtool: '#eval-source-map',
@@ -43,6 +42,5 @@ for (var key in pages) {
   }
   devConfig.plugins.push(new HtmlWebpackPlugin(conf))
 }
-
 
 module.exports = merge(baseWebpackConfig, devConfig)

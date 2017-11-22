@@ -42,19 +42,12 @@ module.exports = {
         include: projectRoot,
         exclude: /node_modules/,
         options: {
+          interpolate: 'require',
+
           ignoreCustomFragments: [/\{\{.*?}}/],
           root: path.resolve(__dirname, 'src/page'),
-          interpolate: true,
-          attrs: ['img:src', 'link:href', 'script:src']
+          attrs: ['img:src', 'link:href']
         }
-      },
-      {
-        test: /\.css$/,
-        loader: 'css-loader'
-      },
-      {
-        test: /\.less$/,
-        loader: 'style-loader!css-loader!less-loader'
       },
       {
         test: /\.js$/,
@@ -72,15 +65,7 @@ module.exports = {
         options: {
           limit: 10000,
           name: function (path) {
-            let reg = /^(.+)\\src\\page\\([\w\\]+)\\(img|images|image)\\([\w\.]+)$/
-            if (path.match(reg)) {
-              let filename = path.match(reg)[2] + '\\' + path.match(reg)[3]
-              let arr = filename.split('\\')
-              filename = arr.join('/')
-              return utils.assetsPath(filename + '/[name].[hash:7].[ext]')
-            } else {
-              return utils.assetsPath('img/[name].[hash:7].[ext]')
-            }
+            return utils.imagesPath(path, '[name].[hash:7].[ext]')
           }
         },
       },

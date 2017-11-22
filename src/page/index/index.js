@@ -1,5 +1,6 @@
 import './css/index.less'
 
+
 import Out from "./js/out"
 
 import ajpg from "./img/a.jpg"

@@ -27,12 +27,16 @@ exports.cssLoaders = function (options) {
     }).join('!')
 
     if (options.extract) {
-      return ExtractTextPlugin.extract('style-loader', sourceLoader)
+      return ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: sourceLoader.split('!')
+      })
     } else {
       return ['style-loader', sourceLoader].join('!')
     }
   }
 
+  // http://vuejs.github.io/vue-loader/configurations/extract-css.html
   return {
     css: generateLoaders(['css']),
     postcss: generateLoaders(['css']),
@@ -40,7 +44,7 @@ exports.cssLoaders = function (options) {
     sass: generateLoaders(['css', 'sass?indentedSyntax']),
     scss: generateLoaders(['css', 'sass']),
     stylus: generateLoaders(['css', 'stylus']),
-    styl: generateLoaders(['css', 'stylus']),
+    styl: generateLoaders(['css', 'stylus'])
   }
 }
 
@@ -56,6 +60,18 @@ exports.styleLoaders = function (options) {
     })
   }
   return output
+}
+
+exports.imagesPath = function (path, name) {
+  let reg = /^(.+)\\src\\page\\([\w\\]+)\\(img|images|image)\\([\w\.]+)$/
+  if (path.match(reg)) {
+    let filename = path.match(reg)[2] + '\\' + path.match(reg)[3]
+    let arr = filename.split('\\')
+    filename = arr.join('/')
+    return exports.assetsPath(filename + '/' + name)
+  } else {
+    return exports.assetsPath('img/' + name)
+  }
 }
 
 // 获取HTML模板对象
