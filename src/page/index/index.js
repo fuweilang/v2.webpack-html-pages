@@ -1,6 +1,5 @@
 import './css/index.less'
 
-
 import Out from "./js/out"
 
 import ajpg from "./img/a.jpg"
@@ -21,5 +20,4 @@ $('#wrap').css({
 var img = document.createElement('img')
 img.src = ajpg
 img.width = 160;
-$('.img1-con').append(img)
-
+$('.img1-con').append(img);

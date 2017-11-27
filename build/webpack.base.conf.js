@@ -4,7 +4,7 @@ var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
 
-var entry = utils.getEntry(process.env.NODE_ENV === 'production' ? config.build.js : config.dev.js)
+var entry = utils.getEntry(process.env.NODE_ENV === 'production' ? config.build.entry : config.dev.entry)
 module.exports = {
   entry: entry,
   output: {
@@ -19,7 +19,7 @@ module.exports = {
     ],
     alias: {
       'src': path.resolve(__dirname, '../src'),
-      'page': path.resolve(__dirname, '../src/page'),
+      'page': path.resolve(__dirname, '../src/page/index'),
       'widget': path.resolve(__dirname, '../src/widget'),
       'jquery': 'jquery'
     },
@@ -45,8 +45,8 @@ module.exports = {
           interpolate: 'require',
 
           ignoreCustomFragments: [/\{\{.*?}}/],
-          root: path.resolve(__dirname, 'src/page'),
-          attrs: ['img:src', 'link:href']
+          root: path.resolve(__dirname, '../src/page'),
+          attrs: ['img:src']
         }
       },
       {

@@ -7,15 +7,21 @@ var src = process.argv[2]
 var pages, js
 if (src == 'all') {
   pages = './src/page/**/index.html'
-  js = './src/page/**/index.js'
+  entry = './src/page/**/index.js'
+  css = './src/page/**/css/'
+  js = './src/page/**/css/'
 } else {
   pages = `./src/page/${src}/index.html`
-  js = `./src/page/${src}/index.js`
+  entry = `./src/page/${src}/index.js`
+  css = `./src/page/${src}/css/`
+  js = `./src/page/${src}/js/`
 }
 
 var config = {
   build: {
     pages: pages,
+    entry: entry,
+    css: css,
     js: js,
     env: require('./prod.env'),
     // index: path.resolve(__dirname, '../dist/index.html'),
@@ -32,6 +38,8 @@ var config = {
   },
   dev: {
     pages: pages,
+    entry: entry,
+    css: css,
     js: js,
     env: require('./dev.env'),
     port: 8080,
