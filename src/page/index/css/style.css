@@ -1,3 +1,8 @@
-p {
-  background: #888;
+body {
+	background: #999;
+}
+body .icon {
+	width: 200px;
+	height: 100px;
+	background: #fff url('../img/icon.png') no-repeat;
 }

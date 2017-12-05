@@ -1,5 +1,6 @@
 var path = require('path')
 var express = require('express')
+var glob = require('glob')
 var webpack = require('webpack')
 var config = require('../config')
 var opn = require('opn')
@@ -7,6 +8,8 @@ var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
+
+var argv = process.argv[2]
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -57,12 +60,31 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
+var filenames = glob.sync(config.dev.files)
+var reg = /^\.\/src\/page\/(.+)\/(js|css|img|images|image).*$/
+var filearr = []
+for (var name of filenames) {
+  if (name.match(reg)) {
+    var file = name.match(reg)[1] + '/' + name.match(reg)[2]
+    if (filearr.indexOf(file) < 0) {
+      filearr.push(file)
+      // 解决css和js相对路径的问题
+      app.use(`/${file}`, express.static(path.resolve(__dirname, `../src/page/${file}`)))
+      // app.use(`/${name.match(reg)[2]}`, express.static(path.resolve(__dirname, `../src/page/${file}`)))
+    }
+  }
+}
+
 module.exports = app.listen(port, function (err) {
   if (err) {
     console.log(err)
     return
   }
-  var uri = 'http://localhost:' + port
+  if (argv == 'all') {
+    var uri = 'http://localhost:' + port + '/index/index.html'
+  } else {
+    var uri = `http://localhost:${port}/${argv}/index.html`
+  }
   console.log('Listening at ' + uri + '\n')
   // opn(uri)
 })

@@ -4,9 +4,17 @@ var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
 
-var entry = utils.getEntry(process.env.NODE_ENV === 'production' ? config.build.entry : config.dev.entry)
+var entry, NODE_ENV
+if (process.env.NODE_ENV === 'production') {
+  entry = config.build.entry
+  NODE_ENV = 'production'
+} else {
+  entry = config.dev.entry
+  NODE_ENV = 'development'
+}
+var entrys = utils.getEntry(entry, NODE_ENV)
 module.exports = {
-  entry: entry,
+  entry: entrys,
   output: {
     path: config.build.assetsRoot,
     publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
@@ -29,25 +37,11 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.js$/,
-      //   loader: 'eslint-loader',
-      //   enforce: 'pre',
-      //   include: projectRoot,
-      //   exclude: /node_modules/
-      // },
       {
         test: /\.html$/,
         loader: 'html-loader',
         include: projectRoot,
-        exclude: /node_modules/,
-        options: {
-          interpolate: 'require',
-
-          ignoreCustomFragments: [/\{\{.*?}}/],
-          root: path.resolve(__dirname, '../src/page'),
-          attrs: ['img:src']
-        }
+        exclude: /node_modules/
       },
       {
         test: /\.js$/,

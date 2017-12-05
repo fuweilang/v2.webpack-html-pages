@@ -6,7 +6,6 @@ var merge = require('webpack-merge')
 var utils = require('./utils')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -20,13 +19,6 @@ const devConfig = {
   // eval-source-map is faster for development
   devtool: '#eval-source-map',
   plugins: [
-    // new CopyWebpackPlugin([
-    //   {
-    //     from: path.resolve(__dirname, '../src/page/index/css/'),
-    //     to: './static/index/css/'
-    //   },
-    // ]),
-
     new webpack.ProvidePlugin({
       $: "jquery"
     }),
@@ -38,7 +30,7 @@ const devConfig = {
   ]
 }
 
-var pages = utils.getHtmlEntry(config.dev.pages)
+var pages = utils.getHtmlEntry(config.dev.pages, 'development')
 for (var key in pages) {
   var page = pages[key]
   var conf = {

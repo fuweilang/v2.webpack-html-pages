@@ -2,27 +2,29 @@
 var path = require('path')
 var merge = require('webpack-merge')
 var glob = require('glob')
+var argv = process.argv[2]
 
-var src = process.argv[2]
-var pages, js
-if (src == 'all') {
-  pages = './src/page/**/index.html'
-  entry = './src/page/**/index.js'
-  css = './src/page/**/css/'
-  js = './src/page/**/css/'
+var fileconfig = {}
+if (argv == 'all') {
+  fileconfig = {
+    files: './src/page/**',
+    pages: './src/page/**/*.html',
+    entry: './src/page/**/*.js',
+    js: './src/page/**/js/**',
+    css: './src/page/**/css/**'
+  }
 } else {
-  pages = `./src/page/${src}/index.html`
-  entry = `./src/page/${src}/index.js`
-  css = `./src/page/${src}/css/`
-  js = `./src/page/${src}/js/`
+  fileconfig = {
+    files: `./src/page/${argv}/**`,
+    pages: `./src/page/${argv}/**/*.html`,
+    entry: `./src/page/${argv}/**/*.js`,
+    js: `./src/page/${argv}/js/**`,
+    css: `./src/page/${argv}/css/**`
+  }
 }
 
 var config = {
   build: {
-    pages: pages,
-    entry: entry,
-    css: css,
-    js: js,
     env: require('./prod.env'),
     // index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
@@ -37,10 +39,6 @@ var config = {
     productionGzipExtensions: ['js', 'css']
   },
   dev: {
-    pages: pages,
-    entry: entry,
-    css: css,
-    js: js,
     env: require('./dev.env'),
     port: 8080,
     assetsSubDirectory: 'static',
@@ -55,19 +53,24 @@ var config = {
   }
 }
 
+config.build = merge(fileconfig, config.build)
+config.dev = merge(fileconfig, config.dev)
+
 var setBuildHTML = function (globPath) {
-  var files, entry, reg
+  var files, entry, reg, pathname, basename
   files = glob.sync(globPath)
-  reg = /^\.\/src\/page\/([\w\/]+)\/index\.html$/
+  reg = /^\.\/src\/page\/([\w\/]+)\/(\w+)\.html$/
   for (var i = 0; i < files.length; i++) {
     entry = files[i]
     if (entry.match(reg)) {
-      basename = entry.match(reg)[1]
-      config.build[basename] = path.resolve(__dirname, '../dist/page/' + basename + '/index.html')
+      pathname = entry.match(reg)[1]
+      basename = entry.match(reg)[2]
+      var key = `${pathname}/${basename}`
+      config.build[key] = path.resolve(__dirname, `../dist/page/${pathname}/${basename}.html`)
     }
   }
   return config
 }
-setBuildHTML(pages)
+setBuildHTML(fileconfig.pages)
 
 module.exports = config

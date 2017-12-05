@@ -1,9 +1,11 @@
-// https://github.com/shelljs/shelljs
-require('shelljs/global')
-env.NODE_ENV = 'production'
-
+process.env.NODE_ENV = 'production'
 var path = require('path')
 var config = require('../config')
+var utils = require('./utils')
+
+utils.deleteBuildEntry(config.build.pages)
+utils.setBuildEntry(config.build.pages)
+
 var ora = require('ora')
 var webpack = require('webpack')
 var webpackConfig = require('./webpack.prod.conf')
@@ -24,4 +26,7 @@ webpack(webpackConfig, function (err, stats) {
     chunks: false,
     chunkModules: false
   }) + '\n')
+
+  // 编译完成后删除_build文件
+  utils.deleteBuildEntry(config.build.pages)
 })

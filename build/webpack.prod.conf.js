@@ -18,8 +18,8 @@ var prodConfig = {
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('[name]/js/index.js?time=[chunkhash]'),
-    chunkFilename: utils.assetsPath('[id]/js/index.js?time=[chunkhash]')
+    filename: utils.assetsPath('[name].js?time=[chunkhash]'),
+    chunkFilename: utils.assetsPath('[id].js?time=[chunkhash]')
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -35,17 +35,17 @@ var prodConfig = {
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     // extract css into its own file
-    new ExtractTextPlugin(utils.assetsPath('[name]/css/index.css?time=[contenthash]'))
+    new ExtractTextPlugin(utils.assetsPath('[name].css?time=[contenthash]'))
   ]
 }
 
-var pages = utils.getHtmlEntry(config.build.pages)
+var pages = utils.getHtmlEntry(config.build.pages, 'production')
 for (var key in pages) {
   var page = pages[key]
   var conf = {
     filename: process.env.NODE_ENV === 'testing'
       ? page.filename
-      : config.build[page.basename],
+      : config.build[`${page.pathname}/${page.basename}`],
     template: page.template,
     chunks: [page.chunk],
     inject: true,
@@ -53,8 +53,6 @@ for (var key in pages) {
       removeComments: true,
       collapseWhitespace: true,
       removeAttributeQuotes: true
-      // more options:
-      // https://github.com/kangax/html-minifier#options-quick-reference
     },
     // necessary to consistently work with multiple chunks via CommonsChunkPlugin
     chunksSortMode: 'dependency'
